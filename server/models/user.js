@@ -20,8 +20,8 @@ userSchema.pre("save", function(next){
       next();
     });
   });
-
 });
+
 userSchema.methods.isPasswordEqualTo = function(externalPassword, done){
   bcrypt.compare(externalPassword, this.password, function(err, isMatch){
     if(err){
