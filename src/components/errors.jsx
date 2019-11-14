@@ -4,17 +4,17 @@ import { connect } from 'react-redux'
 import { withRouter } from 'react-router'
 class Errors extends Component  {
   componentWillUpdate(nextProps) {
-    if(this.props.location != nextProps.location){
+    if(this.props.location !== nextProps.location){
       this.props.resetError();
     }
   }
-  render () {
+  render() {
     return (
       this.props.error &&
       <div className="alert alert-danger" role="alert">
         {this.props.error}
       </div>
-      )
+    );
     }
 }
 

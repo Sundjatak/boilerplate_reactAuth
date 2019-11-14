@@ -12,7 +12,7 @@ export function setAuthentification(isLoggedIn) {
 
 export function incrementActionCount() {
   return {
-    type: INCREMENT_ACTION_COUNT,
+    type: INCREMENT_ACTION_COUNT
   }
 }
 
@@ -36,10 +36,13 @@ export function signinUser({ email, password }, history) {
       dispatch(setAuthentification(true));
       history.push('/ressources');
     }).catch((error) => {
-      dispatch(parseError(error.response.data.message))
+      console.log(dispatch(parseError(error.response)));
+
+      // dispatch(parseError(error.response.data.message));
     });
   }
 }
+
 export function signoutUser() {
   return function(dispatch){
     dispatch(setAuthentification(false));
