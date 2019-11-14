@@ -50,3 +50,9 @@ exports.getCategory = function(req, res, next) {
   });
 
 };
+
+exports.removeCategory = function(req, res, next) {
+  Category.findOne({ _id: req.body.id }, function (err, cat){
+    cat.remove();
+  });
+};

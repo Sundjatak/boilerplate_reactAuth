@@ -52,6 +52,12 @@ module.exports = function(expressServer){
   expressServer.get('/category/posts',
     PostController.getPostByCategory
   );
+  expressServer.post('/rm-post',
+    PostController.removePost
+  );
+  expressServer.post('/rm-category',
+    CategoryController.removeCategory
+  );
   expressServer.post('/set-caption',
     CaptionController.setCaption
   );
@@ -63,5 +69,8 @@ module.exports = function(expressServer){
   );
   expressServer.get('/captions',
     CaptionController.getCaptions
+  );
+  expressServer.post('/rm-captions',
+    CaptionController.removeCaption
   );
 }

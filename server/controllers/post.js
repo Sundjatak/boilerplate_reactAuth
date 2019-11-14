@@ -47,6 +47,13 @@ exports.getPost = function(req, res, next) {
 };
 
 
+exports.removePost = function(req, res, next) {
+  Post.deleteOne({ _id: req.body.id }, function (err){
+   if (err) return handleError(err);
+  });
+};
+
+
 exports.getPostByCategory = function(req, res, next) {
   Post.find({category: req.body.id},(err, posts) =>
     {

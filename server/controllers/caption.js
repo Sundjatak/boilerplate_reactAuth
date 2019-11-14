@@ -37,3 +37,9 @@ exports.getCaption = function(req, res, next) {
     }
   });
 };
+
+exports.removeCaption = function(req, res, next) {
+  Caption.findOne({ _id: req.body.id }, function (err, post){
+    post.remove();
+  });
+};
