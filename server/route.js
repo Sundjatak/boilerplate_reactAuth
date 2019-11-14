@@ -36,16 +36,16 @@ module.exports = function(expressServer){
   expressServer.get('/categories',
     CategoryController.getCategories
   );
-  // expressServer.post('/set-post',
-  //   PostController.setPost
-  // );
-  // expressServer.post('/get-post',
-  //   PostController.getPost
-  // );
-  // expressServer.get('/posts',
-  //   PostController.getPosts
-  // );
-  // expressServer.post('/add-post',
-  //   PostController.addPost
-  // );
+  expressServer.post('/set-post',
+    PostController.setPost
+  );
+  expressServer.get('/get-post',
+    PostController.getPost
+  );
+  expressServer.get('/posts',
+    PostController.getPosts
+  );
+  expressServer.post('/add-post',
+    PostController.addPost
+  );
 }
