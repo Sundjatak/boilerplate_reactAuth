@@ -52,16 +52,16 @@ module.exports = function(expressServer){
   expressServer.get('/category/posts',
     PostController.getPostByCategory
   );
-  // expressServer.post('/set-caption',
-  //   CaptionController.setCaption
-  // );
-  // expressServer.get('/get-caption',
-  //   CaptionController.getCaption
-  // );
-  // expressServer.post('/add-caption',
-  //   CaptionController.addCaption
-  // );
-  // expressServer.get('/captions',
-  //   CaptionController.getCaptions
-  // );
+  expressServer.post('/set-caption',
+    CaptionController.setCaption
+  );
+  expressServer.get('/get-caption',
+    CaptionController.getCaption
+  );
+  expressServer.post('/add-caption',
+    CaptionController.addCaption
+  );
+  expressServer.get('/captions',
+    CaptionController.getCaptions
+  );
 }
