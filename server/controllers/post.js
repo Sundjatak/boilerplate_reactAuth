@@ -1,4 +1,5 @@
 const Post = require('../models/postModel');
+const Category = require('../models/categoryModel');
 const lodash = require('lodash');
 
 exports.addPost = function(req, res, next) {
@@ -44,3 +45,11 @@ exports.getPost = function(req, res, next) {
     }
   });
 };
+
+
+exports.getPostByCategory = function(req, res, next) {
+  Post.find({category: req.body.id},(err, posts) =>
+    {
+      return res.status(422).send({ dataPost: posts });
+    })
+  }
