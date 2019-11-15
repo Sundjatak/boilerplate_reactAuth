@@ -5,20 +5,30 @@ const expressServer = express();
 const router = require('./route');
 const http = require('http');
 const mongoose = require('mongoose');
-const cors = require('cors');
+const multer = require("multer");
+const cors = require("cors");
+const GridFsStorage = require("multer-gridfs-storage");
+const Grid = require("gridfs-stream");
+const crypto = require("crypto");
+const path = require("path");
+
 mongoose.connect(
   'mongodb+srv://Leo:elephant@cluster0-vjn4m.mongodb.net/test?retryWrites=true&w=majority',
   { useUnifiedTopology: true },
    { useNewUrlParser: true }
 );
 mongoose.connection
-  .once('open', ()=> console.log('Connecté à Mongo'))
+  .once('open', () => {
+    gfs = Grid(mongoose.connection.db, mongoose.mongo)
+    gfs.collection('uploads')})
   .on('error', error => console.log('Erreur de connexion ;', error));
 
-expressServer.use(morgan('combined'));
-expressServer.use(bodyParser.json({type: '*/*'}));
-expressServer.use(cors());
 
+
+expressServer.use(morgan('combined'));
+expressServer.use(express.static(path.join(__dirname, '..', 'public')));
+expressServer.use(bodyParser.json());
+expressServer.use(cors());
 const port = 3090;
 const server = http.createServer(expressServer);
 router(expressServer);

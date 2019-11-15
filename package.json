@@ -10,6 +10,7 @@
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "express": "^4.17.1",
+    "form-data": "^3.0.0",
     "gridfs-stream": "^1.1.1",
     "immutable": "^4.0.0-rc.12",
     "jwt-simple": "^0.5.6",
