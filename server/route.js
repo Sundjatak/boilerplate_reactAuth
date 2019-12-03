@@ -15,7 +15,7 @@ module.exports = function(expressServer){
 
   const storage = multer.diskStorage({
     destination: function(req, file, cb) {
-      const uploadsDir = path.join(__dirname, '..', 'public', 'uploads', `${Date.now()}`)
+      const uploadsDir = path.join(__dirname, '..', 'public', 'uploads', `avatar`)
       fs.mkdirSync(uploadsDir)
       cb(null, uploadsDir)
     },
@@ -50,12 +50,19 @@ module.exports = function(expressServer){
     }
   );
 
+
+
   expressServer.post('/signup',
     AuthentificationController.signup
   );
   expressServer.post(
     "/signin",
     AuthentificationController.signin
+  );
+  expressServer.get(
+    '/user',
+    requireToken,
+    AuthentificationController.getUser
   );
   expressServer.post('/set-category',
     CategoryController.setCategory

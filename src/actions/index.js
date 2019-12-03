@@ -1,4 +1,4 @@
-import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_RESSOURCE, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR} from './action-types'
+import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_RESSOURCE, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS} from './action-types'
 import axios from "axios";
 import FormData from 'form-data'
 
@@ -34,6 +34,7 @@ export function signinUser({ email, password }, history) {
     })
     .then(response => {
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('email', email);
       dispatch(setAuthentification(true));
       history.push('/ressources');
     }).catch((error) => {
@@ -62,6 +63,7 @@ export function signupUser({ email, password }, history) {
     .then(response => {
       dispatch(setAuthentification(true));
       localStorage.setItem('token', response.data.token)
+      localStorage.setItem('email', email);
       history.push('/ressources');
     }).catch((error) => {
         console.log(error);
@@ -78,13 +80,37 @@ export function getSpecialRessource() {
       }
     })
     .then((response) => {
-      dispatch({ type : PARSE_MESSAGE, payload: response.data.result })
+      dispatch({ type : GET_USER, payload: response.data.result })
     })
     .catch((error) => {
       console.log(error);
     });
   }
 }
+
+
+
+export function getPosts() {
+  return function(dispatch){
+    axios
+    .get(`${BASE_URL}/posts/`, {
+      headers: {
+        authorization : localStorage.getItem("token"),
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response) => {
+      console.log(response)
+      dispatch({ type : GET_POSTS, payload: response.data.result })
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+}
+
+
+
 
 export function parseError(errorMessage){
   return{
@@ -97,9 +123,6 @@ export function resetError(errorMessage){
     type: RESET_ERROR
   }
 }
-
-
-
 /////
 
 
@@ -124,26 +147,5 @@ export function postImage(data, history) {
     });
   }
 }
-//
-// postImage = e => {
-//   e.preventDefault();
-//   const file = document.getElementById("inputGroupFile01").files;
-//   const formData = new FormData();
-//
-//   formData.append("img", file[0]);
-//
-//   fetch("http://localhost:3090/", {
-//     method: "POST",
-//     body: formData
-//   }).then(r => {
-//     console.log(r);
-//   });
-//
-//   document
-//     .getElementById("img")
-//     .setAttribute("src", `http://localhost:3000/${file[0].name}`);
-//     console.log(file[0]);
-// };
-
 
 /////

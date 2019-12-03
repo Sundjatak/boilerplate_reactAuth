@@ -16,6 +16,18 @@ function getTokenForUser(user) {
     config.secret
   );
 }
+
+
+exports.getUser = function(req, res, next) {
+  User.findOne({ token: req.body.token }, function(err, user){
+    if (user) {
+      return res.status(422).send({ dataUser: user });
+    }else{
+      console.log(err)
+    }
+  })
+}
+
 exports.signup = function(req, res, next) {
   const email = req.body.email;
   const password = req.body.password;

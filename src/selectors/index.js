@@ -4,6 +4,14 @@ import lodash from 'lodash';
 export const getIntegerList = state => {
   return state.ressources.ressourceList
 }
+export const getPostList = state => {
+  return state.ressources.postList
+}
+
+// export const getSpecialPostList = createSelector (
+//   return getPostList(state)
+// )
+
 export const getContainsOne  = state => {
   return getIntegerList(state).filter( r => r.toString().indexOf('1') > -1 );
 }

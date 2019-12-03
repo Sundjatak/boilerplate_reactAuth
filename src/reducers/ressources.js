@@ -1,9 +1,10 @@
-import { ADD_RESSOURCE, PARSE_MESSAGE } from '../actions/action-types';
+import { ADD_RESSOURCE, PARSE_MESSAGE, GET_POSTS } from '../actions/action-types';
 
 const initialState = {
   ressourceList : [0],
+  postList : [0],
   message: ""
-}
+    }
 
 export default function RessourcesReducer (state= initialState, action){
   switch(action.type){
@@ -19,6 +20,13 @@ export default function RessourcesReducer (state= initialState, action){
         ...state,
         message: action.payload
       };
+      case GET_POSTS:
+        return {
+          ressourceList: [
+            ...state.postList,
+            state.ressourceList[ state.postList.length - 1 ] +1
+          ]
+        };
     default:
       return state;
   }

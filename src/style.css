@@ -5,3 +5,9 @@
 .error{
   color: red;
 }
+#img_profile {
+  height: 300px;
+  width: auto;
+  position: relative;
+  margin: 25px;
+}

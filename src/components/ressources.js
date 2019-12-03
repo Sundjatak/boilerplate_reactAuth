@@ -8,18 +8,31 @@ import {
   getSpecialNumberList,
   getRessourceMessage
 } from '../selectors'
-import FormData from 'form-data'
+import FormData from 'form-data';
+require("../style.css");
 
 class Ressources extends Component  {
 
- onClickHandler = (e) => {
-   e.preventDefault()
-   const file = document.getElementById('inputGroupFile01').files
-   const formData = new FormData()
-   formData.append('img', file[0])
-   console.log(file[0])
-   this.props.postImage(file[0], this.props.history);
-}
+  onClickHandler = (e) => {
+     e.preventDefault()
+     const file = document.getElementById('inputGroupFile01').files
+     const formData = new FormData()
+     formData.append('img', file[0])
+     console.log(file[0])
+     this.props.postImage(file[0], this.props.history);
+  }
+
+  componentWillMount() {
+    this.props.getPosts();
+    console.log(this.props.getPosts());
+  }
+
+  renderPosts = dataPosts => {
+    return (
+      dataPosts.map( dataPosts => <li key={dataPosts}>{dataPosts}</li> )
+    )
+  }
+
 //   componentWillMount() {
 //     this.props.getSpecialRessource();
 //   }
@@ -66,48 +79,19 @@ class Ressources extends Component  {
 // }
 // const mapStateToProps = state => {
 //   return {
-//     integerRessources : getIntegerList(state),
-//     constainsOneRessources: getContainsOne(state),
-//     getPrimeNumberList: getPrimeNumber(state),
-//     specialRessources: getSpecialNumberList(state),
-//     message: getRessourceMessage(state)
+//     integerPost : getIntegerList(state),
+//
 //   }
 // }
-  //
-  // handleSubmit= e => {
-  //         const file = document.getElementById('inputGroupFile01').files
-  //         const fd = new FormData()
-  //         fd.append('img',file[0])
-  //         console.log(fd.filename)
-  //         this.props.postImage(fd, this.props.history);
-  //
-  //     }
 
-
-  //
-  // Post = e => {
-  //   e.preventDefault();
-  //   const file = document.getElementById("inputGroupFile01").files;
-  //   const formData = new FormData();
-  //
-  //   formData.append("img", file[0]);
-  //
-  //   fetch("http://localhost:3090/", {
-  //     method: "POST",
-  //     body: formData
-  //   }).then(r => {
-  //     console.log(r);
-  //   });
-  //
-  //   document
-  //     .getElementById("img")
-  //     .setAttribute("src", `http://localhost:3000/${file[0].name}`);
-  //     console.log(file[0]);
-  // };
 
   render() {
+    const admin = localStorage.getItem('email');
     return (
       <div className="container">
+        <div>
+          <h1>Bonjour { admin }</h1>
+        </div>
         <div className="jumbotron">
           <h1 className="display-4">Image Uplaoder</h1>
           <p className="lead">
@@ -134,11 +118,13 @@ class Ressources extends Component  {
           Upload
         </button>
         <img
-          id="img"
+          id="img_profile"
           style={{
             display: "block"
           }}
+          src="/uploads/1574428909274/gus.jpg"
         ></img>
+
       </div>
     );
   }

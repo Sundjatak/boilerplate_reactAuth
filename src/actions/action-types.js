@@ -4,3 +4,5 @@ export const ADD_RESSOURCE = "ADD_RESSOURCE";
 export const PARSE_MESSAGE = "PARSE_MESSAGE";
 export const RESET_ERROR = "RESET_ERROR";
 export const PARSE_ERROR = "PARSE_ERROR";
+export const GET_USER = "GET_USER";
+export const GET_POSTS = "GET_POSTS";
