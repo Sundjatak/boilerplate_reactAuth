@@ -1,33 +1,35 @@
-import { ADD_RESSOURCE, PARSE_MESSAGE, GET_POSTS } from '../actions/action-types';
+import { ADD_POSTS, PARSE_MESSAGE, GET_POSTS } from '../actions/action-types';
 
-const initialState = {
+const ressourcesState = {
   ressourceList : [0],
-  postList : [0],
-  message: ""
+  postList : [],
+  message: "",
+  post: []
     }
 
-export default function RessourcesReducer (state= initialState, action){
+export default function RessourcesReducer (state= ressourcesState.post, action){
   switch(action.type){
-    case ADD_RESSOURCE:
-    return{
-      ressourceList: [
-        ...state.ressourceList,
-        state.ressourceList[ state.ressourceList.length - 1 ] +1
-      ]
-    };
-    case PARSE_MESSAGE:
-      return {
-        ...state,
-        message: action.payload
-      };
-      case GET_POSTS:
-        return {
-          ressourceList: [
-            ...state.postList,
-            state.ressourceList[ state.postList.length - 1 ] +1
-          ]
-        };
-    default:
-      return state;
+    case ADD_POSTS:
+      return state.concat([action.payload]);
+    // case 'DELETE_POST':
+    //     return state.filter((post)=>post.id !== action.id);
+  //   case PARSE_MESSAGE:
+  //     return {
+  //       ...state,
+  //       message: action.payload
+  //     };
+    case GET_POSTS:
+      const post = action.payload.reverse().map((post, index) => {
+        if(index === action.index) {
+          return Object.assign({}, post, {
+            completed : !post.completed
+          })
+        }
+      return post
+    })
+    console.log(post)
+      return post
+      default:
+        return state;
   }
 }

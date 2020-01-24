@@ -5,16 +5,15 @@ import { Provider } from "react-redux";
 import { createStore, applyMiddleware } from "redux";
 import thunk from "redux-thunk";
 import App from "./components/app";
-import reducers from "./reducers";
+import reducer from "./reducers";
 import { setAuthentification } from "./actions"
 import { BrowserRouter } from "react-router-dom";
 import { actionCounter } from './middlewares/action-counter'
 const invariant = require('redux-immutable-state-invariant').default();
 
-
 const createStoreWithMiddleware = applyMiddleware(invariant, thunk, actionCounter)(createStore);
 const store= createStoreWithMiddleware(
-    reducers,
+    reducer,
     window.__REDUX_DEVTOOLS_EXTENSION__ &&
     window.__REDUX_DEVTOOLS_EXTENSION__()
 );
@@ -23,6 +22,7 @@ const token = localStorage.getItem('token');
 if(token){
   store.dispatch(setAuthentification(true));
 }
+
 ReactDOM.render(
     <Provider
       store={store}

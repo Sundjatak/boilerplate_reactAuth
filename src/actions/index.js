@@ -1,4 +1,4 @@
-import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_RESSOURCE, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS} from './action-types'
+import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS} from './action-types'
 import axios from "axios";
 import FormData from 'form-data'
 
@@ -18,11 +18,11 @@ export function incrementActionCount() {
 }
 
 
-export function addRessource() {
-  return {
-    type: ADD_RESSOURCE,
-  }
-}
+// export function addRessource() {
+//   return {
+//     type: ADD_RESSOURCE,
+//   }
+// }
 
 
 export function signinUser({ email, password }, history) {
@@ -91,7 +91,8 @@ export function getSpecialRessource() {
 
 
 export function getPosts() {
-  return function(dispatch){
+  return dispatch => {
+
     axios
     .get(`${BASE_URL}/posts/`, {
       headers: {
@@ -100,8 +101,7 @@ export function getPosts() {
       }
     })
     .then((response) => {
-      console.log(response)
-      dispatch({ type : GET_POSTS, payload: response.data.result })
+        dispatch({ type : GET_POSTS, payload: response.data.dataPost })
     })
     .catch((error) => {
       console.log(error);
@@ -110,6 +110,34 @@ export function getPosts() {
 }
 
 
+
+
+export function postForm({ title, subtitle, text, tags }, history) {
+    const newPost = {
+      title : title,
+      subtitle: subtitle,
+      text: text,
+      tags: tags
+  };
+  console.log()
+  return function(dispatch){
+    axios
+    .post(`${BASE_URL}/add-post`, {
+      title,
+      subtitle,
+      text,
+      tags
+    })
+    .then(response => {
+      console.log('Bien envoyé Jerry', response);
+      dispatch({ type : ADD_POSTS, payload: response.data })
+
+    })
+   .catch((error) => {
+      console.log("Tu n'es qu'une merde Jerry", error);
+    });
+  }
+}
 
 
 export function parseError(errorMessage){

@@ -13,13 +13,14 @@ exports.addPost = function(req, res, next) {
     });
 };
 
+
 exports.getPosts = function(req, res, next) {
   Post.find({}, function(err, post) {
     if (err) {
       return next(err);
     }
     if (post) {
-      return res.status(422).send({ dataPost: post });
+      return res.status(200).send({ dataPost: post });
     }
   });
 };

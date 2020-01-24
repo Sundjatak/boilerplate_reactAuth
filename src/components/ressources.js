@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import * as actions from "../actions"
+import { getPosts } from "../actions"
 import { connect } from 'react-redux'
+import Post from './post'
 import {
   getIntegerList,
   getContainsOne,
@@ -12,6 +14,13 @@ import FormData from 'form-data';
 require("../style.css");
 
 class Ressources extends Component  {
+  constructor(props) {
+     super(props);
+    this.state = {
+      displayForm: false,
+      posts : []
+     }
+  }
 
   onClickHandler = (e) => {
      e.preventDefault()
@@ -22,78 +31,46 @@ class Ressources extends Component  {
      this.props.postImage(file[0], this.props.history);
   }
 
-  componentWillMount() {
-    this.props.getPosts();
+  componentDidMount() {
     console.log(this.props.getPosts());
-  }
 
-  renderPosts = dataPosts => {
+   }
+
+
+ displayForm = () => {
+     this.setState({
+         displayForm: !this.state.displayForm
+     })
+ }
+
+ renderForm(){
     return (
-      dataPosts.map( dataPosts => <li key={dataPosts}>{dataPosts}</li> )
-    )
+      <Post  />
+    );
   }
-
-//   componentWillMount() {
-//     this.props.getSpecialRessource();
-//   }
-//   renderRessource = ressources => {
-//     return (
-//       ressources.map( ressource => <li key={ressource}>{ressource}</li>)
-//     )
-//   }
-//     render () {
-//         return (
-//           <div className='row'>
-//             <div className='col'>
-//               <button
-//                 type='button'
-//                 onClick={ () => this.props.addRessource() }
-//                 className='btn btn-raised btn-primary'
-//                 >
-//                 Ajouter un nombre
-//               </button>
-//             </div>
-//             <div className='col'>
-//               Entiers
-//               <ul> {this.renderRessource(this.props.integerRessources)}</ul>
-//             </div>
-//             <div className='col'>
-//               Contiennent '1'
-//               <ul> {this.renderRessource(this.props.constainsOneRessources)}</ul>
-//
-//             </div>
-//             <div className='col'>
-//               Entiers premiers
-//               <ul> {this.renderRessource(this.props.getPrimeNumberList)}</ul>
-//
-//             </div>
-//             <div className='col'>
-//               Entiers premiers contenant '1'
-//               <ul> {this.renderRessource(this.props.specialRessources)}</ul>
-//
-//             </div>
-//             {this.props.message}
-//           </div>
-//         )
-//     }
-// }
-// const mapStateToProps = state => {
-//   return {
-//     integerPost : getIntegerList(state),
-//
-//   }
-// }
-
 
   render() {
+    const post = this.props.postList
+    console.log(post)
+    const listItems = post.map((d) => <li key={d._id}><h4>{d.title}</h4><p>{d.text}</p></li>);
+    const { error, loading, postList } = this.props;
     const admin = localStorage.getItem('email');
+    const displayForm = this.state.displayForm;
     return (
       <div className="container">
         <div>
           <h1>Bonjour { admin }</h1>
+            <button type="button" className="btn btn-primary"  onClick={this.displayForm}>
+              Add Post
+            </button>
+            {this.state.displayForm == true &&
+              <Post />
+             }
+          <ul>  {listItems} </ul>
         </div>
+
         <div className="jumbotron">
-          <h1 className="display-4">Image Uplaoder</h1>
+          <h1 className="display-4">Image Uploader</h1>
           <p className="lead">
             This is a simple application to upload and retrieve images from a
             database
@@ -114,7 +91,7 @@ class Ressources extends Component  {
             </label>
           </div>
         </div>
-        <button type="button" className="btn btn-primary"  onClick={this.onClickHandler}>
+        <button type="button" className="btn btn-primary" onClick={this.onClickHandler}>
           Upload
         </button>
         <img
@@ -130,6 +107,10 @@ class Ressources extends Component  {
   }
 }
 
-export default connect(null, actions) (Ressources)
+const mapStateToProps = (state) => {
+  return {
+    postList : state.ressources
+  };
 
-// export default connect(mapStateToProps, actions) (Ressources);
+};
+export default connect(mapStateToProps, actions) (Ressources)

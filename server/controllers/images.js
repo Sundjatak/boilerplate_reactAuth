@@ -10,14 +10,12 @@ exports.index = function(req, res){
   })
 }
 
-
 exports.show = function(req, res){
   Image.findById(id, function(err, image){
     if(err) res.send(err)
     res.json(image)
   })
 }
-
 
 exports.create = function(req, res){
   const path = require('path')
