@@ -8,7 +8,6 @@ exports.index = function(req, res){
     res.json(logEntry)
   })
 }
-
 exports.create = function(req, res){
   const newLogEntry = new LogEntry(req.body)
     newLogEntry.save(function(err, logEntry){
@@ -16,7 +15,6 @@ exports.create = function(req, res){
     res.json(logEntry)
   })
 }
-
 exports.show = function(req, res){
   LogEntry.findById(req.params.id, function(err, logEntry){
     if (err) res.sender(err)

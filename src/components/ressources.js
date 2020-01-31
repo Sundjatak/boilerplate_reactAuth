@@ -10,16 +10,24 @@ import {
   getSpecialNumberList,
   getRessourceMessage
 } from '../selectors'
+// import Loading from './loadSpinner'
 import FormData from 'form-data';
 require("../style.css");
 
 class Ressources extends Component  {
   constructor(props) {
      super(props);
+    this.edit = this.edit.bind(this);
+    this.delete = this.delete.bind(this);
+    this.renderPosts = this.renderPosts.bind(this);
+    this.props.getPosts();
     this.state = {
       displayForm: false,
-      posts : []
+      posts : [],
+      displayEditForm: false,
+      editID : 0
      }
+
   }
 
   onClickHandler = (e) => {
@@ -31,28 +39,93 @@ class Ressources extends Component  {
      this.props.postImage(file[0], this.props.history);
   }
 
+
   componentDidMount() {
-    console.log(this.props.getPosts());
+  }
 
-   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.postList !== this.props.postList ) {
+      this.renderPosts();
+    }
+  }
 
-
- displayForm = () => {
+  add = () => {
      this.setState({
-         displayForm: !this.state.displayForm
+      displayEditForm: false,
+      displayForm: !this.state.displayForm
      })
- }
+  }
 
- renderForm(){
-    return (
-      <Post  />
-    );
+  delete = id => {
+    this.props.removePost(id)
+  }
+
+  edit = id => {
+    this.setState({
+      displayEditForm: !this.state.displayEditForm,
+      displayForm: false,
+      editID: id
+    })
+  }
+
+
+  renderPosts(){
+
+    const post = this.props.postList
+    if(post){
+      const listItems = post.map((d) =>
+        <li className="container" key={d._id}>
+          <div className="row justify-content-md-center">
+            <div className="col-md-5">
+              <h4 className="row col-md-4">{d.title}</h4>
+              <p className="row col-md-4">{d.text}</p>
+            </div>
+            { this.state.displayEditForm == true && this.state.editID == d._id ?
+              <button
+                type="button"
+                className="btn row btn-warning  col-md-2"
+                onClick={this.edit.bind(this, d._id)}
+                >
+                cancel edition
+              </button> :
+              <button
+                type="button"
+                className="btn row btn-warning  col-md-2"
+                onClick={this.edit.bind(this, d._id)}
+                >
+                Edit Post
+              </button>
+             }
+
+            <button
+              type="button"
+              className="btn row btn-danger  col-md-2"
+              onClick={this.delete.bind(this, d._id)}
+              >
+              Delete Post
+            </button>
+          </div>
+          {this.state.displayEditForm == true && this.state.editID == d._id &&
+            <Post
+              id={d._id}
+              title={d.title}
+              subtitle={d.subtitle}
+              text={d.text}
+              tags={d.tags}
+              category={d.category}
+              vip={d.vip}
+              action={this.edit}
+              />
+           }
+        </li>
+      );
+      return (
+        <div> {listItems}</div>
+      )
+    }
   }
 
   render() {
-    const post = this.props.postList
-    console.log(post)
-    const listItems = post.map((d) => <li key={d._id}><h4>{d.title}</h4><p>{d.text}</p></li>);
     const { error, loading, postList } = this.props;
     const admin = localStorage.getItem('email');
     const displayForm = this.state.displayForm;
@@ -60,13 +133,13 @@ class Ressources extends Component  {
       <div className="container">
         <div>
           <h1>Bonjour { admin }</h1>
-            <button type="button" className="btn btn-primary"  onClick={this.displayForm}>
+            <button type="button" className="btn btn-primary"  onClick={this.add}>
               Add Post
             </button>
             {this.state.displayForm == true &&
               <Post />
              }
-          <ul>  {listItems} </ul>
+          <ul>  { this.renderPosts()} </ul>
         </div>
 
         <div className="jumbotron">
@@ -109,8 +182,8 @@ class Ressources extends Component  {
 
 const mapStateToProps = (state) => {
   return {
-    postList : state.ressources
+    postList: state.ressources.post,
+    isDeleted: state.ressources.isDeleted
   };
-
 };
 export default connect(mapStateToProps, actions) (Ressources)

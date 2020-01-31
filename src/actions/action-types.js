@@ -6,3 +6,5 @@ export const RESET_ERROR = "RESET_ERROR";
 export const PARSE_ERROR = "PARSE_ERROR";
 export const GET_USER = "GET_USER";
 export const GET_POSTS = "GET_POSTS";
+export const DELETE_POST = "DELETE_POST";
+export const SET_POST = "SET_POST";

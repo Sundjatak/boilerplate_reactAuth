@@ -1,4 +1,4 @@
-import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS} from './action-types'
+import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS, DELETE_POST, SET_POST} from './action-types'
 import axios from "axios";
 import FormData from 'form-data'
 
@@ -16,14 +16,6 @@ export function incrementActionCount() {
     type: INCREMENT_ACTION_COUNT
   }
 }
-
-
-// export function addRessource() {
-//   return {
-//     type: ADD_RESSOURCE,
-//   }
-// }
-
 
 export function signinUser({ email, password }, history) {
   return function(dispatch){
@@ -51,7 +43,6 @@ export function signoutUser() {
     localStorage.removeItem('token');
   }
 }
-
 
 export function signupUser({ email, password }, history) {
   return function(dispatch){
@@ -88,8 +79,6 @@ export function getSpecialRessource() {
   }
 }
 
-
-
 export function getPosts() {
   return dispatch => {
 
@@ -109,9 +98,6 @@ export function getPosts() {
   }
 }
 
-
-
-
 export function postForm({ title, subtitle, text, tags }, history) {
     const newPost = {
       title : title,
@@ -119,7 +105,6 @@ export function postForm({ title, subtitle, text, tags }, history) {
       text: text,
       tags: tags
   };
-  console.log()
   return function(dispatch){
     axios
     .post(`${BASE_URL}/add-post`, {
@@ -129,7 +114,6 @@ export function postForm({ title, subtitle, text, tags }, history) {
       tags
     })
     .then(response => {
-      console.log('Bien envoyé Jerry', response);
       dispatch({ type : ADD_POSTS, payload: response.data })
 
     })
@@ -138,6 +122,47 @@ export function postForm({ title, subtitle, text, tags }, history) {
     });
   }
 }
+
+
+
+export function setPost(id, { title, subtitle, text, tags }, history) {
+    const newPost = {
+      title : title,
+      subtitle: subtitle,
+      text: text,
+      tags: tags
+  };
+  return function(dispatch){
+    axios
+    .post(`${BASE_URL}/set-post/` + id, {
+      title,
+      subtitle,
+      text,
+      tags
+    })
+    .then(response => {
+      dispatch({ type : SET_POST, payload: response.data })
+    })
+   .catch((error) => {
+      console.log("Tu n'es qu'une merde Ralphy", error);
+    });
+  }
+}
+
+
+export function removePost(id) {
+  return function(dispatch){
+    axios
+    .delete(`${BASE_URL}/rm-post/` + id)
+    .then((response) => {
+        dispatch({ type : DELETE_POST, payload: response.data })
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+}
+
 
 
 export function parseError(errorMessage){

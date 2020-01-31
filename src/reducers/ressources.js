@@ -1,23 +1,20 @@
-import { ADD_POSTS, PARSE_MESSAGE, GET_POSTS } from '../actions/action-types';
+import { ADD_POSTS, PARSE_MESSAGE, GET_POSTS, DELETE_POST, SET_POST } from '../actions/action-types';
 
 const ressourcesState = {
   ressourceList : [0],
   postList : [],
   message: "",
-  post: []
+  post: [],
+  isDeleted: false
     }
 
-export default function RessourcesReducer (state= ressourcesState.post, action){
+export default function RessourcesReducer (state= ressourcesState, action){
   switch(action.type){
     case ADD_POSTS:
-      return state.concat([action.payload]);
-    // case 'DELETE_POST':
-    //     return state.filter((post)=>post.id !== action.id);
-  //   case PARSE_MESSAGE:
-  //     return {
-  //       ...state,
-  //       message: action.payload
-  //     };
+      return {
+        ...state,
+        post:[ ...state.post, action.payload ]
+      }
     case GET_POSTS:
       const post = action.payload.reverse().map((post, index) => {
         if(index === action.index) {
@@ -25,11 +22,32 @@ export default function RessourcesReducer (state= ressourcesState.post, action){
             completed : !post.completed
           })
         }
-      return post
-    })
-    console.log(post)
-      return post
-      default:
-        return state;
+        return post
+      })
+      return {
+      ...state,
+      post: post
+    }
+    case DELETE_POST:
+      const postList = state.post.filter(post => post._id !== action.payload.id)
+      return{
+        ...state,
+        post: postList
+      }
+    case SET_POST:
+      const editedPostID = action.payload._id
+      const posts = state.post.map((post, i) => {
+        if(post._id == editedPostID){
+          return {...post, title: action.payload.title, subtitle: action.payload.subtitle, text: action.payload.text, tags: action.payload.tags, vip: action.payload.vip}
+        }else{
+          return {...post}
+        }
+      })
+      return {
+         ...state,
+         post: posts
+      }
+    default:
+      return state;
   }
 }

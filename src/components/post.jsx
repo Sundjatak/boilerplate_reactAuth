@@ -6,14 +6,34 @@ import { connect } from 'react-redux';
 const FIELDS = {title: 'title', subtitle: 'subtitle', text: 'text', tags: 'tags', category: 'category', vip: 'vip'}
 
 class Post extends Component {
+  constructor(props) {
+      super(props);
+      this.state = {
+        id: props.id || '',
+        title: props.title || '',
+        subtitle: props.subtitle || '',
+        text: props.text || '',
+        tags: props.tags || '',
+        vip: props.vip || '',
+      };
+    }
   handleSubmit = credentials => {
-    console.log(credentials)
-    this.props.postForm(credentials);
-
+    console.log(this.props.initialValues.id === undefined)
+    if (this.props.initialValues.id === undefined){
+      this.props.postForm(credentials);
+    }else{
+      this.props.setPost(this.state.id, credentials);
+      this.props.action()
+    }
   };
+
   render(){
+    const edit = this.state
     return(
-      <form className='p-3 bg-primary rounded shadow col-md-12 justify-content-md-center' onSubmit={ this.props.handleSubmit(this.handleSubmit) }>
+      <form
+        className={ this.state.title ? "p-3 bg-warning rounded shadow col-md-12 justify-content-md-center" : "p-3 bg-primary rounded shadow col-md-12 justify-content-md-center"}
+        id = { this.state.id }
+        onSubmit={ this.props.handleSubmit(this.handleSubmit) }>
         <div className='justify-content-md-center'>
             <div className=" justify-content-md-center">
               <div className="row justify-content-md-center">
@@ -21,6 +41,7 @@ class Post extends Component {
                  <label className=" text-light bmd-label-floating">Titre</label>
                  <Field
                    name={FIELDS.title}
+                   placeholder= {edit.title}
                    component="input"
                    type="text"
                    className="form-control text-light"
@@ -87,92 +108,41 @@ class Post extends Component {
                </fieldset>
              </div>
              <div className="row justify-content-md-center mt-3">
-                <button type="submit" className="btn btn-primary btn-raised">
-                  Submit
-                </button>
+               { this.state.title ?
+                 <button type="submit" className="btn btn-default btn-raised" >
+                 Modifier
+               </button> :
+               <button type="submit"className= "btn btn-primary btn-raised" >
+                 Submit
+               </button>
+                }
               </div>
             </div>
         </div>
       </form>
 
-      //   <div className="row justify-content-md-center">
-      //     <fieldset className="col-md-10 form-group">
-      //       <label className="bmd-label-floating">Titre</label>
-      //       <Field
-      //         name={FIELDS.title}
-      //         component="input"
-      //         type="text"
-      //         className="form-control"
-      //         />
-      //     </fieldset>
-      //   </div>
-      //   <div className="row justify-content-md-center">
-      //     <fieldset className="col-md-10 form-gtoup">
-      //       <label className="bmd-label-floating">Sous Titre</label>
-      //       <Field
-      //         name={FIELDS.subtitle}
-      //         component="input"
-      //         type="text"
-      //         className="form-control"
-      //         />
-      //     </fieldset>
-      //   </div>
-      //   <div className="row justify-content-md-center">
-      //     <fieldset className="col-md-10 form-gtoup">
-      //       <label className="bmd-label-floating">Texte</label>
-      //       <Field
-      //         name={FIELDS.text}
-      //         component="input"
-      //         type="text"
-      //         className="form-control"
-      //         />
-      //     </fieldset>
-      //   </div>
-      //   <div className="row justify-content-md-center">
-      //     <fieldset className="col-md-10 form-gtoup">
-      //       <label className="bmd-label-floating">Tags</label>
-      //       <Field
-      //         name={FIELDS.tags}
-      //         component="input"
-      //         type="text"
-      //         className="form-control"
-      //         />
-      //     </fieldset>
-      //   </div>
-      //   <div className="row justify-content-md-center">
-      //     <fieldset className="col-md-10 form-gtoup">
-      //       <label className="bmd-label-floating">Categorie</label>
-      //       <Field
-      //         name={FIELDS.category}
-      //         component="input"
-      //         type="radio"
-      //         className="form-control"
-      //         />
-      //     </fieldset>
-      //   </div>
-      //   <div className="row justify-content-md-center">
-      //     <fieldset className="col-md-10 form-gtoup">
-      //       <label className="bmd-label-floating">VIP</label>
-      //       <Field
-      //         name={FIELDS.vip}
-      //         component="input"
-      //         type="checkbox"
-      //         className="form-control"
-      //         />
-      //     </fieldset>
-      //   </div>
-      //   <div className="row justify-content-md-center">
-      //     <button type="submit" className="btn btn-primary btn-raised">
-      //       Submit
-      //     </button>
-      //   </div>
     )
+  }
+}
+
+function mapStateToProps(state, ownProps) {
+  return {
+    initialValues: {
+      id: ownProps.id,
+      title: ownProps.title,
+      subtitle: ownProps.subtitle,
+      text: ownProps.text,
+      tags: ownProps.tags,
+      vip: ownProps.vip,
+    }
   }
 }
 
 const postForm = reduxForm({
   form : 'post',
-  fields: Object.keys(FIELDS)
+  fields: Object.keys(FIELDS),
+
+  enableReinitialize : true,
 })(Post);
 
-export default connect(null, actions)(postForm);
+export default connect(mapStateToProps, actions)(postForm);

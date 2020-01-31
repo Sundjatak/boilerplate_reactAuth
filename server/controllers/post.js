@@ -13,7 +13,6 @@ exports.addPost = function(req, res, next) {
     });
 };
 
-
 exports.getPosts = function(req, res, next) {
   Post.find({}, function(err, post) {
     if (err) {
@@ -26,7 +25,7 @@ exports.getPosts = function(req, res, next) {
 };
 
 exports.setPost = function(req, res, next) {
-  Post.findOne({ _id: req.body.id }, function (err, post){
+  Post.findOne({ _id: req.params.id }, function (err, post){
     post.title = req.body.title;
     post.subtitle = req.body.subtitle;
     post.text = req.body.text;
@@ -34,30 +33,37 @@ exports.setPost = function(req, res, next) {
     post.category = req.body.category;
     post.vip = req.body.vip;
     post.save();
+    return res.json(post);
   });
 };
 
 exports.getPost = function(req, res, next) {
   Post.findOne({ _id: req.body.id }, function (err, post){
     if (post) {
-      return res.status(422).send({ dataPost: post });
+      return res.status(200).send({ dataPost: post });
     }else{
       console.log(err)
     }
   });
 };
 
-
 exports.removePost = function(req, res, next) {
-  Post.deleteOne({ _id: req.body.id }, function (err){
-   if (err) return handleError(err);
+  const idPost = req.params.id
+  console.log(idPost)
+  Post.deleteOne({ _id: idPost }, function (err, post){
+    if (post) {
+      console.log(post)
+      return res.status(200).send({ isDeleted: true, id: idPost });
+    }else{
+      console.log(err)
+      return res.status(404).send({ isDeleted: false });
+    }
   });
 };
-
 
 exports.getPostByCategory = function(req, res, next) {
   Post.find({category: req.body.id},(err, posts) =>
     {
       return res.status(422).send({ dataPost: posts });
-    })
-  }
+  })
+};

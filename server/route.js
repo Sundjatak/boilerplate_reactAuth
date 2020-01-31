@@ -76,7 +76,7 @@ module.exports = function(expressServer){
   expressServer.get('/categories',
     CategoryController.getCategories
   );
-  expressServer.post('/set-post',
+  expressServer.post('/set-post/:id',
     PostController.setPost
   );
   expressServer.get('/get-post',
@@ -91,7 +91,7 @@ module.exports = function(expressServer){
   expressServer.get('/category/posts',
     PostController.getPostByCategory
   );
-  expressServer.post('/rm-post',
+  expressServer.delete('/rm-post/:id',
     PostController.removePost
   );
   expressServer.post('/rm-category',
