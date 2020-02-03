@@ -1,11 +1,12 @@
-import { ADD_POSTS, PARSE_MESSAGE, GET_POSTS, DELETE_POST, SET_POST } from '../actions/action-types';
+import { ADD_POSTS, PARSE_MESSAGE, GET_POSTS, DELETE_POST, SET_POST, SEND_PICTURE, GET_PICTURE } from '../actions/action-types';
 
 const ressourcesState = {
   ressourceList : [0],
   postList : [],
   message: "",
   post: [],
-  isDeleted: false
+  isDeleted: false,
+  pictureName: ""
     }
 
 export default function RessourcesReducer (state= ressourcesState, action){
@@ -46,6 +47,12 @@ export default function RessourcesReducer (state= ressourcesState, action){
       return {
          ...state,
          post: posts
+      }
+    case SEND_PICTURE:
+      const pictureName = action.payload.file.filename
+      return {
+         ...state,
+         pictureName: pictureName
       }
     default:
       return state;

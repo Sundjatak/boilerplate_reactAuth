@@ -24,7 +24,6 @@ mongoose.connection
   .on('error', error => console.log('Erreur de connexion ;', error));
 
 
-
 expressServer.use(morgan('combined'));
 expressServer.use(express.static(path.join(__dirname, '..', 'public')));
 expressServer.use(bodyParser.json());

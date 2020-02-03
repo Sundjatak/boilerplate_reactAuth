@@ -22,7 +22,7 @@ class Ressources extends Component  {
     this.renderPosts = this.renderPosts.bind(this);
     this.props.getPosts();
     this.state = {
-      displayForm: false,
+      displayForm: true,
       posts : [],
       displayEditForm: false,
       editID : 0
@@ -35,7 +35,7 @@ class Ressources extends Component  {
      const file = document.getElementById('inputGroupFile01').files
      const formData = new FormData()
      formData.append('img', file[0])
-     console.log(file[0])
+     console.log(file[0].name)
      this.props.postImage(file[0], this.props.history);
   }
 

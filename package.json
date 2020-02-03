@@ -8,6 +8,7 @@
     "bezier-easing": "^2.1.0",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
+    "draft-js": "^0.11.4",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.15.1",
     "express": "^4.17.1",

@@ -8,3 +8,5 @@ export const GET_USER = "GET_USER";
 export const GET_POSTS = "GET_POSTS";
 export const DELETE_POST = "DELETE_POST";
 export const SET_POST = "SET_POST";
+export const SEND_PICTURE = "SEND_PICTURE";
+export const GET_PICTURE = "GET_PICTURE";

@@ -1,4 +1,4 @@
-import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS, DELETE_POST, SET_POST} from './action-types'
+import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS, DELETE_POST, SET_POST, SEND_PICTURE} from './action-types'
 import axios from "axios";
 import FormData from 'form-data'
 
@@ -179,22 +179,21 @@ export function resetError(errorMessage){
 /////
 
 
-export function postImage(data, history) {
-  let formData = new FormData();
-  formData.append('file', data, data.name);
+export function postImage(data) {
+  const formData = new FormData();
+  formData.append('image', data);
+  const config = {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        };
+    console.log(...formData)
   return function(dispatch){
     axios
-    .post(`${BASE_URL}/log-entries/5dcedbc43d84143a44800739/images`, formData, {
-      headers: {
-          'accept': 'application/json',
-          'Accept-Language': 'en-US,en;q=0.8',
-          'Content-Type': `multipart/form-data;`,
-        }
-      })
+    .post(`${BASE_URL}/upload`, formData, config)
     .then(response => {
-      history.push('/ressources');
       console.log('Bonne reponse', response);
-
+      dispatch({ type : SEND_PICTURE, payload: response.data })
     }).catch((error) => {
         console.log('Pas bonne reponse', error);
     });
