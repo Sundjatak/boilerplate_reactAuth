@@ -4,6 +4,7 @@ const lodash = require('lodash');
 
 exports.addPost = function(req, res, next) {
     const post = new Post(req.body);
+    console.log(req.body)
     post.save(function(err) {
         if (err) {
             return next(err);
@@ -42,7 +43,7 @@ exports.getPost = function(req, res, next) {
     if (post) {
       return res.status(200).send({ dataPost: post });
     }else{
-      console.log(err)
+      return res.status(404)
     }
   });
 };

@@ -12,10 +12,6 @@ const PostSchema = new Schema({
     text: {
       type: String
     },
-    // author: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: 'user'
-    // },
     tags: {
       type: String,
     },
@@ -25,6 +21,9 @@ const PostSchema = new Schema({
     },
     vip: {
       type: Boolean,
+    },
+    image: {
+      type: String
     }
   },
   { timestamps: true }

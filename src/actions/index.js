@@ -98,7 +98,7 @@ export function getPosts() {
   }
 }
 
-export function postForm({ title, subtitle, text, tags }, history) {
+export function postForm({ title, subtitle, text, tags }, image, history) {
     const newPost = {
       title : title,
       subtitle: subtitle,
@@ -111,9 +111,11 @@ export function postForm({ title, subtitle, text, tags }, history) {
       title,
       subtitle,
       text,
-      tags
+      tags,
+      image
     })
     .then(response => {
+      console.log(response.data)
       dispatch({ type : ADD_POSTS, payload: response.data })
 
     })

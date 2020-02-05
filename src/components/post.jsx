@@ -22,12 +22,17 @@ class Post extends Component {
        this.onChange = this.onChange.bind(this);
     }
   handleSubmit = credentials => {
-    console.log(this.props.initialValues.id === undefined)
-    if (this.props.initialValues.id === undefined){
-      this.props.postForm(credentials);
-    }else{
-      this.props.setPost(this.state.id, credentials);
-      this.props.action()
+    if (this.state.imagePosted){
+      const imagePosted = this.state.imagePosted
+      if (this.props.initialValues.id === undefined){
+        this.props.postForm(credentials, imagePosted);
+        this.cancelCourse()
+      }else{
+        this.props.setPost(this.state.id, credentials);
+        this.props.action()
+      }
+    } else {
+      alert("Image missing")
     }
   };
 
@@ -43,35 +48,23 @@ class Post extends Component {
   componentDidUpdate(prevProps) {
     if (prevProps.filename !== this.props.filename) {
       const file = this.props.filename;
-
       this.setState({imagePosted: file})
     }
   }
 
-  renderImage(file){
-    if(file){
-      console.log('renderImage ' + file)
-      const fileUrl = '/uploads/' + file
-      return {
-        render(){
-          <div className="jumbotron">
-            <img src={fileUrl} alt="image article" />
-          </div>
-        }
-      }
-    }
+  cancelCourse = () => {
+    this.formRef.reset();
   }
 
-
   render(){
-
     const edit = this.state
     const imageUrl = "/uploads/" + this.state.imagePosted
     return(
       <form
         className={ this.state.title ? "p-3 bg-warning rounded shadow col-md-12 justify-content-md-center" : "p-3 bg-primary rounded shadow col-md-12 justify-content-md-center"}
         id = { this.state.id }
-        onSubmit={ this.props.handleSubmit(this.handleSubmit) }>
+        onSubmit={ this.props.handleSubmit(this.handleSubmit) }
+        ref={(form) => this.formRef = form}>
         <div className='justify-content-md-center'>
             <div className=" justify-content-md-center">
               <div className="row justify-content-md-center">

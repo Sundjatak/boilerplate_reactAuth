@@ -15,10 +15,10 @@ module.exports = function(expressServer){
   .post(imgController.create)
 
 
+    expressServer.route('/images')
+    .get(imgController.index)
+
   expressServer.route('/images/:id')
-  .get(imgController.index)
-
-
   .delete(imgController.destroy)
 
   const logController = require('./controllers/log_entries')

@@ -22,11 +22,12 @@ const upload = multer({ storage, limits:{fileSize: 1000000}, }).single("image");
 
 
 exports.index = function(req, res){
-  Image.find({log_entry_id: req.params.log_entry_id}, function(err, image){
+  Image.find({}, function(err, image){
     if(err) res.send(err)
     res.json(image)
   })
 }
+
 exports.show = function(req, res){
   Image.findById({ _id: req.params.id }, function(err, image){
     if(err) res.send(err)
@@ -34,12 +35,24 @@ exports.show = function(req, res){
   })
 }
 
-exports.create = function(req, res){
+exports.create = function(req, res, next){
   upload(req, res, function (err) {
       if(!err) {
+        register(res.req.file)
           return res.status(200).send({ file : res.req.file }).end();
       }
-  })
+  });
+}
+
+function register( id ) {
+  const image = new Image(id);
+  image.save(function(err) {
+      if (err) {
+          return err;
+      } else {
+          res.json(image);
+      }
+  });
 }
 
 exports.destroy = function(req, res){
