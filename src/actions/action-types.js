@@ -10,3 +10,5 @@ export const DELETE_POST = "DELETE_POST";
 export const SET_POST = "SET_POST";
 export const SEND_PICTURE = "SEND_PICTURE";
 export const GET_PICTURE = "GET_PICTURE";
+export const ADD_COMMENT = "ADD_COMMENT";
+export const GET_COMMENTS = "GET_COMMENTS";

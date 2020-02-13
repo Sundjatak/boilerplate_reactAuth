@@ -3,6 +3,9 @@ import * as actions from "../actions"
 import { getPosts } from "../actions"
 import { connect } from 'react-redux'
 import Post from './post'
+import Comments from './comments'
+import CommentList from './commentList'
+
 import {
   getIntegerList,
   getContainsOne,
@@ -20,14 +23,15 @@ class Ressources extends Component  {
     this.edit = this.edit.bind(this);
     this.delete = this.delete.bind(this);
     this.renderPosts = this.renderPosts.bind(this);
+    this.hideForm = this.hideForm.bind(this);
     this.props.getPosts();
     this.state = {
-      displayForm: true,
+      displayForm: false,
       posts : [],
       displayEditForm: false,
       editID : 0
      }
-
+  console.log(this.props)
   }
 
   onClickHandler = (e) => {
@@ -68,18 +72,49 @@ class Ressources extends Component  {
     })
   }
 
+  hideForm = () => {
+     this.setState({
+      displayEditForm: false,
+      displayForm: false
+     })
+  }
 
   renderPosts(){
-
     const post = this.props.postList
     if(post){
       const listItems = post.map((d) =>
-        <li className="container" key={d._id}>
-          <div className="row justify-content-md-center">
-            <div className="col-md-5">
-              <h4 className="row col-md-4">{d.title}</h4>
-              <p className="row col-md-4">{d.text}</p>
+        <li className=" post_dx" key={d._id}>
+          {this.state.displayEditForm == true && this.state.editID == d._id ?
+          <div className="justify-content-md-center">
+              <Post
+                id={d._id}
+                title={d.title}
+                subtitle={d.subtitle}
+                text={d.text}
+                tags={d.tags}
+                category={d.category}
+                vip={d.vip}
+                action={this.edit}
+                image={d.image}
+                buttonClick={this.hideForm.bind(this)}
+                />
+            </div> :
+            <div className="justify-content-md-center">
+              <img className="head-article-img head-article" src={"/uploads/" + d.image} />
+              <div className="col-md-12 content_post">
+                <h4 className="row col-md-12 post_title">{d.title}</h4>
+                <div  dangerouslySetInnerHTML={{__html: d.text}} />
+              </div>
+              <Comments
+                postID={d._id}
+                author={d._id}
+                />
+              <CommentList 
+                post={d._id}
+                />
             </div>
+            }
+
             { this.state.displayEditForm == true && this.state.editID == d._id ?
               <button
                 type="button"
@@ -104,19 +139,6 @@ class Ressources extends Component  {
               >
               Delete Post
             </button>
-          </div>
-          {this.state.displayEditForm == true && this.state.editID == d._id &&
-            <Post
-              id={d._id}
-              title={d.title}
-              subtitle={d.subtitle}
-              text={d.text}
-              tags={d.tags}
-              category={d.category}
-              vip={d.vip}
-              action={this.edit}
-              />
-           }
         </li>
       );
       return (
@@ -137,43 +159,14 @@ class Ressources extends Component  {
               Add Post
             </button>
             {this.state.displayForm == true &&
-              <Post />
+              <Post
+                text='<p></p>'
+                action={this.add}
+                />
              }
-          <ul>  { this.renderPosts()} </ul>
+          <ul className="postList">  { this.renderPosts()} </ul>
         </div>
 
-        <div className="jumbotron">
-          <h1 className="display-4">Image Uploader</h1>
-          <p className="lead">
-            This is a simple application to upload and retrieve images from a
-            database
-          </p>
-          <hr className="my-4" />
-        </div>
-        <div className="input-group mb-3">
-          <div className="custom-file">
-            <input
-              type="file"
-              onChange={this.onChangeHandler}
-              className="custom-file-input"
-              id="inputGroupFile01"
-              aria-describedby="inputGroupFileAddon01"
-            />
-            <label className="custom-file-label" htmlFor="inputGroupFile01">
-              Choose file
-            </label>
-          </div>
-        </div>
-        <button type="button" className="btn btn-primary" onClick={this.onClickHandler}>
-          Upload
-        </button>
-        <img
-          id="img_profile"
-          style={{
-            display: "block"
-          }}
-          src="/uploads/1574428909274/gus.jpg"
-        ></img>
 
       </div>
     );
@@ -183,7 +176,8 @@ class Ressources extends Component  {
 const mapStateToProps = (state) => {
   return {
     postList: state.ressources.post,
-    isDeleted: state.ressources.isDeleted
+    isDeleted: state.ressources.isDeleted,
+    id: state.authentification.id
   };
 };
 export default connect(mapStateToProps, actions) (Ressources)

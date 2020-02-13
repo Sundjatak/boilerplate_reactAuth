@@ -33,6 +33,7 @@ exports.setPost = function(req, res, next) {
     post.tags = req.body.tags;
     post.category = req.body.category;
     post.vip = req.body.vip;
+    post.image = req.body.image;
     post.save();
     return res.json(post);
   });
@@ -50,7 +51,6 @@ exports.getPost = function(req, res, next) {
 
 exports.removePost = function(req, res, next) {
   const idPost = req.params.id
-  console.log(idPost)
   Post.deleteOne({ _id: idPost }, function (err, post){
     if (post) {
       console.log(post)

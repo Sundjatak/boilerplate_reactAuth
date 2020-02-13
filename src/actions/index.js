@@ -1,4 +1,4 @@
-import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS, DELETE_POST, SET_POST, SEND_PICTURE} from './action-types'
+import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS, DELETE_POST, SET_POST, SEND_PICTURE, ADD_COMMENT, GET_COMMENTS} from './action-types'
 import axios from "axios";
 import FormData from 'form-data'
 
@@ -7,7 +7,8 @@ const BASE_URL = "http://localhost:3090";
 export function setAuthentification(isLoggedIn) {
   return {
       type: SET_AUTHENTIFICATION,
-      payload : isLoggedIn
+      payload : isLoggedIn,
+      id: localStorage.email
   };
 }
 
@@ -98,11 +99,10 @@ export function getPosts() {
   }
 }
 
-export function postForm({ title, subtitle, text, tags }, image, history) {
+export function postForm({ title, subtitle, tags }, image, text, history) {
     const newPost = {
       title : title,
       subtitle: subtitle,
-      text: text,
       tags: tags
   };
   return function(dispatch){
@@ -127,23 +127,25 @@ export function postForm({ title, subtitle, text, tags }, image, history) {
 
 
 
-export function setPost(id, { title, subtitle, text, tags }, history) {
+export function setPost(id, { title, subtitle, tags }, image, text, history) {
     const newPost = {
       title : title,
       subtitle: subtitle,
-      text: text,
       tags: tags
   };
+  console.log(text)
   return function(dispatch){
     axios
     .post(`${BASE_URL}/set-post/` + id, {
       title,
       subtitle,
       text,
-      tags
+      tags,
+      image
     })
     .then(response => {
       dispatch({ type : SET_POST, payload: response.data })
+      console.log("GG mec");
     })
    .catch((error) => {
       console.log("Tu n'es qu'une merde Ralphy", error);
@@ -189,7 +191,6 @@ export function postImage(data) {
                 'content-type': 'multipart/form-data'
             }
         };
-    console.log(...formData)
   return function(dispatch){
     axios
     .post(`${BASE_URL}/upload`, formData, config)
@@ -198,6 +199,43 @@ export function postImage(data) {
       dispatch({ type : SEND_PICTURE, payload: response.data })
     }).catch((error) => {
         console.log('Pas bonne reponse', error);
+    });
+  }
+}
+
+
+
+export function postComment({ comment }, author, postID, history) {
+    const newPost = {
+      comment : comment,
+  };
+  console.log(comment)
+  return function(dispatch){
+    axios
+    .post(`${BASE_URL}/add-comment`, {
+      comment,
+      author,
+      postID
+    })
+    .then(response => {
+      dispatch({ type : ADD_COMMENT, payload: response.data })
+    })
+   .catch((error) => {
+      console.log("Le commentaire ne s'est pas envoyé", error);
+    });
+  }
+}
+
+export function getComments(postID) {
+  console.log(`${BASE_URL}/comments/` + postID)
+  return dispatch => {
+    axios
+    .get(`${BASE_URL}/comments/` + postID)
+    .then((response) => {
+        dispatch({ type : GET_COMMENTS, payload: response.data })
+    })
+    .catch((error) => {
+      console.log(error);
     });
   }
 }

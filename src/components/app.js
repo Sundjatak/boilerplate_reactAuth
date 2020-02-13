@@ -23,6 +23,7 @@ export default class App extends Component {
             <Route
               path="/ressources"
               component={RequireAuthentification(Ressources)}
+              id={localStorage.email}
               />
             <Route exact path="/signin" component={signinForm} />
             <Route exact path="/signout" component={Signout} />

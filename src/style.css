@@ -1,5 +1,15 @@
+import './_fonts/Swansea.ttf'
+
+@font-face {
+  font-family: 'Swansea';
+  src: local('Swansea'), url(./_fonts/Swansea.ttf) format('truetype');
+}
+*{
+  font-family: Swansea;
+}
 .body_content{
   margin-top:5%;
+  margin-bottom: 7em;
 }
 
 .error{
@@ -10,4 +20,124 @@
   width: auto;
   position: relative;
   margin: 25px;
+}
+
+
+
+/*****************************************************/
+/*******************************
+PALETTE :
+
+French Laundry Blue: #3a4660
+
+Comfortably Tan: #c9af98
+
+Peachy Kreme: #ed8a63
+
+Brown Bonnet: #845007
+
+*******************************/
+/******************************************************/
+
+
+
+
+
+/*****************************************************/
+/*****************************************************/
+/****************       MENU       *******************/
+/*****************************************************/
+/*****************************************************/
+.framed{
+  background: #F9F4F4;
+  z-index: 9;
+}
+
+.nav_dx {
+  padding: 1.3em;
+  bottom: 0;
+  position: fixed;
+  width: 100%;
+  border-top: solid #343949 3px;
+  justify-content: space-between;
+
+}
+
+.nav-link_dx{
+  color: #343949;
+  font-size: 2em;
+  align-items: center;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.nav-link_dx:hover {
+  color: #343949;
+  font-size: 2em;
+  align-items: center;
+  text-transform: uppercase;
+}
+
+/*****************************************************/
+/*****************************************************/
+/****************       Header       *******************/
+/*****************************************************/
+/*****************************************************/
+
+
+
+/*****************************************************/
+/*****************************************************/
+/*************       POSTLIST       ******************/
+/*****************************************************/
+/*****************************************************/
+.postList{
+  list-style: none;
+  padding-left: 0;
+}
+
+/*****************************************************/
+/*****************************************************/
+/*************       POST       **********************/
+/*****************************************************/
+/*****************************************************/
+.post_dx {
+  background: #EFEDEC;
+  border: solid #343949 3px;
+  margin: 25px 0;
+}
+.content_post{
+  padding: 25px;
+}
+.head-article-img{
+  position: relative;
+  max-width: 100%;
+  background-size: cover;
+  width: 100%;
+  max-height: 600px;
+
+}
+.post_title{
+  padding: 10px;
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/*****************************************************/
+/*****************************************************/
+/*************       FORMS       **********************/
+/*****************************************************/
+/*****************************************************/
+
+.form_add{
+  background: #3a4660;
+}
+.form-control{
+  background-image: linear-gradient(0deg,#845007 2px,rgba(0,150,136,0) 0),linear-gradient(0deg,rgba(0,0,0,.26) 1px,transparent 0);
+}
+.form-control:focus{
+  border-color: #c9af98;
+}
+textarea{
+  background: #3a4660 !important;
 }

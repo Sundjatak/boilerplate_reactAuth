@@ -3,6 +3,7 @@ const CategoryController = require('./controllers/category');
 const PostController = require('./controllers/post');
 const CaptionController = require('./controllers/caption');
 const imgController = require('./controllers/images');
+const CommentController = require('./controllers/comment');
 
 require('./services/passport');
 const passport = require("passport");
@@ -53,6 +54,13 @@ module.exports = function(expressServer){
     requireToken,
     AuthentificationController.getUser
   );
+  expressServer.post('/add-comment',
+    CommentController.addComment
+  );
+  expressServer.get(
+    '/comments/:postID',
+    CommentController.getComments
+  );
   expressServer.post('/set-category',
     CategoryController.setCategory
   );
@@ -77,6 +85,7 @@ module.exports = function(expressServer){
   expressServer.post('/add-post',
     PostController.addPost
   );
+
   expressServer.get('/category/posts',
     PostController.getPostByCategory
   );

@@ -39,6 +39,7 @@ export default function RessourcesReducer (state= ressourcesState, action){
       const editedPostID = action.payload._id
       const posts = state.post.map((post, i) => {
         if(post._id == editedPostID){
+          console.log(action.payload)
           return {
             ...post,
             title: action.payload.title,

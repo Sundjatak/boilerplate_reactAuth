@@ -10,28 +10,28 @@ class Header extends Component  {
     if(this.props.isLoggedIn){
       return(
         <li className="nav-item">
-          <Link className="nav-link" to ={"/signout"}>Déconnexion</Link>
+          <Link className="nav-link_dx" to ={"/signout"}>Déconnexion</Link>
         </li>
       );
     } else {
       return [
           <li key={1} className="nav-item">
-            <Link className="nav-link" to ={"/signin"}>Connexion</Link>
+            <Link className="nav-link_dx" to ={"/signin"}>Connexion</Link>
           </li>,
           <li key={2} className="nav-item">
-            <Link className="nav-link" to ={"/signup"}>Inscription</Link>
+            <Link className="nav-link_dx" to ={"/signup"}>Inscription</Link>
           </li>
       ];
       }
     };
   render () {
     return (
-      <ul className="nav nav-tabs bg-primary">
+      <ul className="nav nav-tabs nav_dx framed">
         <li className="nav-item">
-          <Link className="nav-link" to="/">Accueil</Link>
+          <Link className="nav-link_dx" to="/">Accueil</Link>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/ressources">Ressource</Link>
+          <Link className="nav-link_dx" to="/ressources">Ressource</Link>
         </li>
         {this.renderAuthentificationLink()}
       </ul>

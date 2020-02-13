@@ -8,7 +8,8 @@ export default function AuthentificationReducer(state = initialState, action) {
   switch(action.type){
     case SET_AUTHENTIFICATION :
       return {
-        isLoggedIn : action.payload
+        isLoggedIn : action.payload,
+        id: action.id
       }
     default :
       return state;
