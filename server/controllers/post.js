@@ -1,5 +1,6 @@
 const Post = require('../models/postModel');
 const Category = require('../models/categoryModel');
+const Comments = require('../models/commentModel');
 const lodash = require('lodash');
 
 exports.addPost = function(req, res, next) {
@@ -22,8 +23,23 @@ exports.getPosts = function(req, res, next) {
     if (post) {
       return res.status(200).send({ dataPost: post });
     }
-  });
+  }).populate("commentIDs", "-__v");
 };
+
+
+// exports.getComments = Post.find().populate('Comments').exec(function(err, posts) {
+//     if (err) throw err;
+//     let commentIDs = [];
+//     posts.forEach(function(post) {
+//       console.log("post" + post)
+//         post.commentIDs.forEach(function(comments) {
+//           console.log(comments)
+//             commentIDs.push(comments.commentIDs);
+//         });
+//     });
+//     console.log(commentIDs)
+//     // response.send(comments); // adTimes should contain all addTimes from his friends
+// });
 
 exports.setPost = function(req, res, next) {
   Post.findOne({ _id: req.params.id }, function (err, post){

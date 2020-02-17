@@ -1,4 +1,4 @@
-import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS, DELETE_POST, SET_POST, SEND_PICTURE, ADD_COMMENT, GET_COMMENTS} from './action-types'
+import {SET_AUTHENTIFICATION, INCREMENT_ACTION_COUNT, ADD_POSTS, PARSE_MESSAGE, PARSE_ERROR, RESET_ERROR, GET_USER, GET_POSTS, DELETE_POST, SET_POST, SEND_PICTURE, ADD_COMMENT, GET_COMMENTS, DELETE_COMMENT} from './action-types'
 import axios from "axios";
 import FormData from 'form-data'
 
@@ -209,7 +209,6 @@ export function postComment({ comment }, author, postID, history) {
     const newPost = {
       comment : comment,
   };
-  console.log(comment)
   return function(dispatch){
     axios
     .post(`${BASE_URL}/add-comment`, {
@@ -218,6 +217,7 @@ export function postComment({ comment }, author, postID, history) {
       postID
     })
     .then(response => {
+      console.log(response.data)
       dispatch({ type : ADD_COMMENT, payload: response.data })
     })
    .catch((error) => {
@@ -227,7 +227,6 @@ export function postComment({ comment }, author, postID, history) {
 }
 
 export function getComments(postID) {
-  console.log(`${BASE_URL}/comments/` + postID)
   return dispatch => {
     axios
     .get(`${BASE_URL}/comments/` + postID)
@@ -239,5 +238,20 @@ export function getComments(postID) {
     });
   }
 }
+
+
+export function removeComment(id) {
+  return function(dispatch){
+    axios
+    .delete(`${BASE_URL}/rm-comment/` + id)
+    .then((response) => {
+        dispatch({ type : DELETE_COMMENT, payload: response.data })
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+}
+
 
 /////

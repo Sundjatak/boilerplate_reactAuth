@@ -6,14 +6,9 @@ const commentState = {
 
 export default function CommentsReducer (state= commentState, action){
   switch(action.type){
-    case ADD_COMMENT:
-    console.log(action.payload.dataComment)
-      return {
-        ...state,
-        comment:[ ...state.comment, action.payload.dataComment ]
-      }
+  
     case GET_COMMENTS:
-    console.log(action.payload)
+      console.log("aaaa  " + action.payload)
       const comment = action.payload.dataComment.reverse().map((comment, index) => {
         if(index === action.index) {
           return Object.assign({}, comment, {

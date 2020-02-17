@@ -57,10 +57,13 @@ module.exports = function(expressServer){
   expressServer.post('/add-comment',
     CommentController.addComment
   );
-  expressServer.get(
-    '/comments/:postID',
+  expressServer.get('/comments',
     CommentController.getComments
   );
+  expressServer.delete('/rm-comment/:id',
+    CommentController.removeComment
+  );
+
   expressServer.post('/set-category',
     CategoryController.setCategory
   );

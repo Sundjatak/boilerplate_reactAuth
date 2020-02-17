@@ -1,27 +1,32 @@
 const Comments = require('../models/commentModel');
+const Post = require('../models/postModel');
 const lodash = require('lodash');
 
 exports.addComment = function(req, res, next) {
-    const comment = new Comment(req.body);
-    comment.save(function(err) {
+  const comments = new Comments(req.body);
+  const postID = req.body.postID;
+  return Comments.create(comments).then(docComment => {
+    return Post.findByIdAndUpdate(
+      postID,
+      { $push: { commentIDs: docComment._id } },
+      function(err, comment) {
         if (err) {
-            return next(err);
-        } else {
-          return res.status(200).send({ dataComment: comment });
-
+          return res.status(404)
         }
+        return res.send({ dataComment: docComment });
     });
+  });
 };
 
 exports.getComments = function(req, res, next) {
-  Comments.find({ postID: req.body.postID }, function(err, comment) {
-    if (comment) {
-      console.log(comment)
-      return res.status(200).send({ dataComment: comment });
-    }else {
-      return res.status(404)
+  Comments.find({}, function(err, comment) {
+    if (err) {
+      return next(err);
     }
-  });
+    if (comment) {
+      return res.status(200).send({ data: comment });
+    }
+  })
 };
 
 exports.getComment = function(req, res, next) {
@@ -34,15 +39,13 @@ exports.getComment = function(req, res, next) {
   });
 };
 
+
 exports.removeComment = function(req, res, next) {
   const idComment = req.params.id
-  console.log(idComment)
-  Comment.deleteOne({ _id: idComment }, function (err, comment){
+  Comments.deleteOne({ _id: idComment }, function (err, comment){
     if (comment) {
-      console.log(comment)
       return res.status(200).send({ isDeleted: true, id: idComment });
     }else{
-      console.log(err)
       return res.status(404).send({ isDeleted: false });
     }
   });

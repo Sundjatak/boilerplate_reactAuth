@@ -31,7 +31,6 @@ class Ressources extends Component  {
       displayEditForm: false,
       editID : 0
      }
-  console.log(this.props)
   }
 
   onClickHandler = (e) => {
@@ -52,6 +51,7 @@ class Ressources extends Component  {
       this.renderPosts();
     }
   }
+
 
   add = () => {
      this.setState({
@@ -81,6 +81,8 @@ class Ressources extends Component  {
 
   renderPosts(){
     const post = this.props.postList
+    console.log()
+    console.log(this.props)
     if(post){
       const listItems = post.map((d) =>
         <li className=" post_dx" key={d._id}>
@@ -109,9 +111,17 @@ class Ressources extends Component  {
                 postID={d._id}
                 author={d._id}
                 />
-              <CommentList 
-                post={d._id}
+              <CommentList
+                comment={d.commentIDs}
+                commentToDelete={this.props.commentToDelete}
                 />
+              {this.props.comment ?
+                <CommentList
+                  comment={this.props.comment}
+                  />
+                :
+                  <span></span>
+              }
             </div>
             }
 
@@ -177,6 +187,8 @@ const mapStateToProps = (state) => {
   return {
     postList: state.ressources.post,
     isDeleted: state.ressources.isDeleted,
+    comment: state.ressources.comment,
+    commentToDelete: state.ressources.commentToDelete,
     id: state.authentification.id
   };
 };

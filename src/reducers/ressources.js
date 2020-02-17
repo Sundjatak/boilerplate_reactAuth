@@ -1,10 +1,12 @@
-import { ADD_POSTS, PARSE_MESSAGE, GET_POSTS, DELETE_POST, SET_POST, SEND_PICTURE, GET_PICTURE } from '../actions/action-types';
+import { ADD_POSTS, PARSE_MESSAGE, GET_POSTS, DELETE_POST, SET_POST, SEND_PICTURE, GET_PICTURE, ADD_COMMENT, DELETE_COMMENT } from '../actions/action-types';
 
 const ressourcesState = {
   ressourceList : [0],
   postList : [],
   message: "",
   post: [],
+  comment: [],
+  commentToDelete: [],
   isDeleted: false,
   pictureName: ""
     }
@@ -62,6 +64,17 @@ export default function RessourcesReducer (state= ressourcesState, action){
       return {
          ...state,
          pictureName: pictureName
+      }
+    case ADD_COMMENT:
+      return {
+        ...state,
+        comment:[ ...state.comment, action.payload.dataComment ]
+      }
+    case DELETE_COMMENT:
+      // const postList = state.post.filter(post => post._id !== action.payload.id)
+      return{
+        ...state,
+        commentToDelete: action.payload.id
       }
     default:
       return state;

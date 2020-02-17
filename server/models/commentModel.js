@@ -9,11 +9,6 @@ const CommentSchema = new Schema({
       type: String,
       required: '{PATH} is required!'
     },
-    postID: {
-      type: Number,
-      required: '{PATH} is required!'
-    },
-
   },
   { timestamps: true }
 );

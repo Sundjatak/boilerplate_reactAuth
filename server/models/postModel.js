@@ -24,7 +24,11 @@ const PostSchema = new Schema({
     },
     image: {
       type: String
-    }
+    },
+    commentIDs: [{
+     type: Schema.Types.ObjectId,
+     ref: 'Comment'
+   }],
   },
   { timestamps: true }
 );

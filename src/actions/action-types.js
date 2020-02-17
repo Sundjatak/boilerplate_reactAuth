@@ -12,3 +12,4 @@ export const SEND_PICTURE = "SEND_PICTURE";
 export const GET_PICTURE = "GET_PICTURE";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const GET_COMMENTS = "GET_COMMENTS";
+export const DELETE_COMMENT = "DELETE_COMMENT";

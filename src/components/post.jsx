@@ -70,7 +70,6 @@ class Post extends Component {
   }
 
 
-
   render(){
     const edit = this.state
     const imageUrl = "/uploads/" + this.state.imagePosted
@@ -87,7 +86,7 @@ class Post extends Component {
               This is a simple application to upload and retrieve images from a
               database
             </p>
-            { this.state.imagePosted ? <img className="head-article-img" src={imageUrl} />: "ERR"}
+            { this.state.imagePosted ? <img className="head-article-img" src={imageUrl} />: "ERR" }
             <hr className="my-4" />
           </div>
             <div className="input-group mb-3">
