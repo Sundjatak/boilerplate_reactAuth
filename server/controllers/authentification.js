@@ -5,7 +5,7 @@ const config = require('../../config');
 require("../services/passport");
 
 const passport = require("passport");
-
+// coucou
 function getTokenForUser(user) {
   const timeStamp = new Date().getTime();
   return jwt.encode(
